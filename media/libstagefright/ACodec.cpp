@@ -799,7 +799,12 @@ status_t ACodec::allocateOutputMetaDataBuffers() {
              mComponentName.c_str(), info.mBufferID, mem->pointer());
     }
 
-    mMetaDataBuffersToSubmit = bufferCount - minUndequeuedBuffers;
+    if (mUseUndequeuedBufs) {
+        // Use all allocated buffers.
+        mMetaDataBuffersToSubmit = bufferCount;
+    } else {
+        mMetaDataBuffersToSubmit = bufferCount - minUndequeuedBuffers;
+    }
     return err;
 }
 
